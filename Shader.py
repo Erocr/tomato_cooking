@@ -28,6 +28,9 @@ void main() {
 }
 """
 
+# /!\                                       /!\
+# It is not the final version of Shader !!!!!!!
+# /!\                                       /!\
 
 def init_shaders():
     """ Initialize the Shader classes
@@ -88,7 +91,6 @@ class Shader:
 
 
 class Shader2D(Shader):
-    # TODO: apply only on some parts of the screen
     def __init__(self, vertex_shader=None, frag_shader=None):
         """
         :param vertex_shader: the name of the file containing the vertex shader
@@ -203,6 +205,3 @@ class MultiShaders2D(Shader):
         for i in range(len(self.frame_buffers)):
             self.frame_buffers[i].release()
             self.frame_buffers[i] = self.ctx.framebuffer(color_attachments=[self.ctx.texture(new_size.get(), 4)])
-
-# TODO: Compute shaders
-# TODO: 3D shader
