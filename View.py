@@ -1,41 +1,27 @@
-import pygame as pg
-from Vec import *
 from os import listdir
+from Tileset import *
+from Shader import *
 
 
 class View:
     def __init__(self):
-        self.factor = Vec(600, 600) / Vec(1920, 1080)
-        self.screen = pg.display.set_mode((Vec(1920, 1080) * self.factor).get(), pg.RESIZABLE)
-        self.sprites = {}
-        self.standard_scale_sprites = {}
-        self.load_sprites()
-        self.resize_sprites()
+        self.screen = pg.display.set_mode((Vec(860, 540)).get(), pg.RESIZABLE | pg.OPENGL | pg.DOUBLEBUF)
+        self.display = pg.Surface((1920, 1080))
+        self.tilesets: dict[str, Tileset] = {}
+        self.load_tilesets()
+        self.shader = Shader2D()
 
-    def load_sprites(self):
+    def load_tilesets(self):
         for file in listdir("sprites/"):
-            im = pg.image.load("sprites/"+file)
-            self.standard_scale_sprites[file.split(".")[0]] = im
+            self.tilesets[file.split(".")[0]] = Tileset("sprites/"+file,  Vec(50, 50))
 
-    def resize_sprites(self):
-        for sprite in self.standard_scale_sprites:
-            self.sprites[sprite] = pg.transform.scale_by(self.standard_scale_sprites[sprite], self.factor.get())
-
-    def draw_sprite(self, image, position):
-        self.screen.blit(self.sprites[image], self.game2screen(position).get())
-
-    def game2screen(self, coord):
-        return coord * self.factor
-
-    def screen2game(self, coord):
-        return coord / self.factor
+    def draw_tile(self, screen_position, tileset, tile_id):
+        self.tilesets[tileset].blit_tile(screen_position, tile_id, self.display)
 
     def update(self, window_resized):
+        self.shader.add_uniform("image", self.display)
+        self.shader.render()
         pg.display.flip()
-        if window_resized:
-            new_size = Vec(*pg.display.get_window_size())
-            self.factor = new_size / Vec(1920, 1080)
-            self.resize_sprites()
 
     def draw_circle(self, center, radius, color=(0, 0, 0)):
         pg.draw.circle(self.screen, color, center.get(), radius)
