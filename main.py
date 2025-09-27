@@ -10,12 +10,14 @@ view = View()
 inputs = Inputs()
 grid = Grid(Vec(10, 10))
 
+grid.tomatoes[5][3].append(Tomato(Vec(3, 5), Vec(1, 0), 0))
+grid.tomatoes[5][4].append(Tomato(Vec(4, 5), Vec(1, 0), 0))
 
 while not inputs.quit:
     start = time.time()
     inputs.update()
 
-    view.draw_tile(Vec(1920, 1080)/2, "tomatest", 0)
+    view.draw_grid(grid)
 
     view.update(inputs.get_resized())
     view.fill()

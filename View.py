@@ -7,13 +7,16 @@ class View:
     def __init__(self):
         self.screen = pg.display.set_mode((Vec(860, 540)).get(), pg.RESIZABLE | pg.OPENGL | pg.DOUBLEBUF)
         self.display = pg.Surface((1920, 1080))
+        self.shader = Shader2D()
+
+        self.tileSize = Vec(50, 50)
+
         self.tilesets: dict[str, Tileset] = {}
         self.load_tilesets()
-        self.shader = Shader2D()
 
     def load_tilesets(self):
         for file in listdir("sprites/"):
-            self.tilesets[file.split(".")[0]] = Tileset("sprites/"+file,  Vec(50, 50))
+            self.tilesets[file.split(".")[0]] = Tileset("sprites/"+file,  self.tileSize)
 
     def draw_tile(self, screen_position, tileset, tile_id):
         self.tilesets[tileset].blit_tile(screen_position, tile_id, self.display)
@@ -23,8 +26,17 @@ class View:
         self.shader.render()
         pg.display.flip()
 
-    def draw_circle(self, center, radius, color=(0, 0, 0)):
-        pg.draw.circle(self.screen, color, center.get(), radius)
+    def draw_grid(self, grid):
+        for y in range(len(grid.grid)):
+            for x in range(len(grid.grid[y])):
+                if grid.grid[y][x] is not None:
+                    screen_position = self.grid2screen(Vec(x, y))
+                    assert False, "not done yet"
+                for tomato in grid.tomatoes[y][x]:
+                    self.draw_tile(self.grid2screen(tomato.to_draw_pos), "tomatest", tomato.type)
+
+    def grid2screen(self, v):
+        return Vec(100, 100) + v * self.tileSize
 
     def fill(self):
         self.screen.fill((0, 0, 0))

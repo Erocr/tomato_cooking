@@ -6,7 +6,7 @@ from Tomato import *
 class Grid:
     def __init__(self, size):
         self.grid: list[list[Optional[OnMapObstacle]]] = [[None for _ in range(int(size.x))] for _ in range(int(size.y))]
-        self.tomatoes: list[list[Optional[Tomato]]] = [[None for _ in range(int(size.x))] for _ in range(int(size.y))]
+        self.tomatoes: list[list[list[Tomato]]] = [[[] for _ in range(int(size.x))] for _ in range(int(size.y))]
 
     def is_legal(self, pos, direction):
         if not self.is_in_grid(pos):
