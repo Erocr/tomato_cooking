@@ -10,17 +10,22 @@ view = View()
 inputs = Inputs()
 grid = Grid(Vec(10, 10))
 
-grid.tomatoes[5][3].append(Tomato(Vec(3, 5), Vec(1, 0), 0))
-grid.tomatoes[5][4].append(Tomato(Vec(4, 5), Vec(1, 0), 0))
+grid.add_tomato(Tomato(Vec(3, 5), Vec(1, 0), 0))
+grid.add_tomato(Tomato(Vec(5, 5), Vec(-1, 0), 0))
 
+
+frame_count = 0
 while not inputs.quit:
+    frame_count += 1
     start = time.time()
     inputs.update()
 
-    view.draw_grid(grid)
+    if frame_count % 25 == 0:
+        grid.one_turn()
 
-    view.update(inputs.get_resized())
     view.fill()
+    view.draw_grid(grid)
+    view.update(inputs.get_resized())
 
     t = time.time() - start
     if t < 1/FPS:
