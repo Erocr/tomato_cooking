@@ -3,6 +3,7 @@ from View import View
 from Vec import *
 from Grid import *
 import time
+from random import random, choice
 
 FPS = 50
 
@@ -10,10 +11,8 @@ view = View()
 inputs = Inputs()
 grid = Grid(Vec(10, 10))
 
-
-grid.add_tomato(Tomato(Vec(3, 5), Vec(1, 0), 0))
-grid.add_tomato(Tomato(Vec(5, 5), Vec(0, 0), 0))
-grid.add_tomato(Tomato(Vec(5, 2), Vec(0, 1), 0))
+for i in range(15):
+    grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), 0))
 
 
 frame_count = 0

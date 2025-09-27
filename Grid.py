@@ -27,6 +27,17 @@ class Grid:
     def one_turn(self):
         for tomato in self.tomatoes_list:
             tomato.move(self)
+        for i1 in range(len(self.tomatoes_list)-1):
+            for i2 in range(i1+1, len(self.tomatoes_list)):
+                t1 = self.tomatoes_list[i1]
+                t2 = self.tomatoes_list[i2]
+                if t1.pos == t2.pos - t2.dir and t2.pos == t1.pos - t1.dir:
+                    t1.path = [t1.path[0], t1.pos - 3*t1.dir/4, t1.pos - t1.dir]
+                    t2.path = [t2.path[0], t2.pos - 3*t2.dir/4, t2.pos - t2.dir]
+                    self.move_tomato(t1, t1.pos - t1.dir)
+                    self.move_tomato(t2, t2.pos - t2.dir)
+                    t1.dir = -t1.dir
+                    t2.dir = -t2.dir
         for tomato in self.tomatoes_list:
             tomato.apply_collision_visuals(self)
         for line in self.tomatoes:
