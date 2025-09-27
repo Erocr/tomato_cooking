@@ -27,6 +27,8 @@ class View:
         pg.display.flip()
 
     def draw_grid(self, grid, t):
+        pg.draw.rect(self.display, (255, 255, 255), pg.Rect(*self.grid2screen(Vec(-1/2, -1/2)).get(),
+                                                            *self.grid2screen(Vec(len(grid.grid)-1/2, len(grid.grid[0])-1/2)).get()))
         for y in range(len(grid.grid)):
             for x in range(len(grid.grid[y])):
                 if grid.grid[y][x] is not None:
