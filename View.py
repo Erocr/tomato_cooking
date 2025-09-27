@@ -26,14 +26,14 @@ class View:
         self.shader.render()
         pg.display.flip()
 
-    def draw_grid(self, grid):
+    def draw_grid(self, grid, t):
         for y in range(len(grid.grid)):
             for x in range(len(grid.grid[y])):
                 if grid.grid[y][x] is not None:
                     screen_position = self.grid2screen(Vec(x, y))
                     assert False, "not done yet"
                 for tomato in grid.tomatoes[y][x]:
-                    self.draw_tile(self.grid2screen(tomato.path[-1]), "tomatest", tomato.type)
+                    self.draw_tile(self.grid2screen(tomato.lerped_position(t)), "tomatest", tomato.type)
 
     def grid2screen(self, v):
         return Vec(100, 100) + v * self.tileSize

@@ -24,7 +24,7 @@ while not inputs.quit:
         grid.one_turn()
 
     view.fill()
-    view.draw_grid(grid)
+    view.draw_grid(grid, (frame_count % 25)/25)
     view.update(inputs.get_resized())
 
     t = time.time() - start

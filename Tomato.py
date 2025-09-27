@@ -19,4 +19,12 @@ class Tomato:
         if grid.nb_tomatoes_at(self.pos) > 1:
             self.path[-1] = self.pos - self.dir / 4
 
+    def lerped_position(self, t):
+        if len(self.path) == 1:
+            return self.path[0]
+        t *= len(self.path) - 1
+        path_i = int(t)
+        t -= path_i
+        return self.path[path_i] + (self.path[path_i + 1] - self.path[path_i]) * t
+
 
