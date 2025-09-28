@@ -8,9 +8,11 @@ class Grid:
         self.grid: list[list[Optional[OnMapObstacle]]] = [[None for _ in range(int(size.x))] for _ in range(int(size.y))]
         self.tomatoes: list[list[list[Tomato]]] = [[[] for _ in range(int(size.x))] for _ in range(int(size.y))]
         self.tomatoes_list = []
+        self.buttons = []
 
     def add_tomato(self, tomato):
         tomato.pos = tomato.pos.to_int()
+        tomato.path[0] = tomato.pos
         assert self.is_in_grid(tomato.pos), "La tomate ajoutée est au-dehors de la grille"
         self.tomatoes_list.append(tomato)
         self.tomatoes[tomato.pos.y][tomato.pos.x].append(tomato)
@@ -23,6 +25,13 @@ class Grid:
         self.tomatoes[tomato.pos.y][tomato.pos.x].remove(tomato)
         self.tomatoes[new_pos.y][new_pos.x].append(tomato)
         tomato.pos = new_pos
+
+    def add_button(self, button):
+        self.buttons.append(button)
+
+    def update(self, inputs):
+        for button in self.buttons:
+            button.update(inputs)
 
     def one_turn(self):
         for tomato in self.tomatoes_list:
