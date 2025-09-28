@@ -24,3 +24,6 @@ class OnMapObstacle:
     def is_illegal_direction(self, v):
         n = self.vec2bit_position(v)
         return (self.illegalDirectionsEncoded >> n) % 2 == 1
+    
+    def draw(self,pos, view):
+        pass #oui bon ptite flemme 

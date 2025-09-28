@@ -2,6 +2,8 @@ from Inputs import Inputs
 from View import View
 from Vec import *
 from Grid import *
+from Level import *
+from Blocs import *
 import time
 from random import random, choice
 
@@ -9,11 +11,14 @@ FPS = 50
 
 view = View()
 inputs = Inputs()
-grid = Grid(Vec(10, 10))
+#grid = Grid(Vec(10, 10))
+level = Level([2,0,0,0])
+grid = level.grid
 
 for i in range(15):
     grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), 0))
 
+level.add_bloc(Goal(Vec(3,4), [1,0,0,0]))
 
 frame_count = 0
 while not inputs.quit:
@@ -27,6 +32,9 @@ while not inputs.quit:
     view.fill()
     view.draw_grid(grid, (frame_count % 25)/25)
     view.update(inputs.get_resized())
+
+    # if level.victory():
+    #     print("chocoolaaat (c'est gagné)")
 
     t = time.time() - start
     if t < 1/FPS:

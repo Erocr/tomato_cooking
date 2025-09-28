@@ -4,6 +4,9 @@ class Tomato:
         self.dir = direction
         self.type = type_
         self.path = [pos]
+    
+    def change_type(self, new_type):
+        self.type = new_type
 
     def move(self, grid):
         self.path = [self.path[-1]]

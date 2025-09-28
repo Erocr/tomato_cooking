@@ -1,6 +1,7 @@
 from os import listdir
 from Tileset import *
 from Shader import *
+from OnMapObstacle import *
 
 
 class View:
@@ -33,7 +34,10 @@ class View:
             for x in range(len(grid.grid[y])):
                 if grid.grid[y][x] is not None:
                     screen_position = self.grid2screen(Vec(x, y))
-                    assert False, "not done yet"
+                    if isinstance(grid.grid[y][x], OnMapObstacle):
+                        grid.grid[y][x].draw(screen_position, self)
+                    else:
+                        assert False, "not done yet"
                 for tomato in grid.tomatoes[y][x]:
                     self.draw_tile(self.grid2screen(tomato.lerped_position(t)), "tomatest", tomato.type)
 
