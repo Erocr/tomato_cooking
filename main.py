@@ -13,7 +13,14 @@ inputs = Inputs()
 grid = Grid(Vec(10, 10))
 
 for i in range(15):
-    grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), 0))
+    grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), int(random()*4)))
+
+
+grid.add_tomato(Tomato(Vec(0, 0), Vec(0, 1), 0))
+grid.grid[0][0] = OnMapObstacle(Vec(0, 0), 2)
+grid.grid[5][0] = OnMapObstacle(Vec(0, 5), 8)
+grid.grid[5][5] = OnMapObstacle(Vec(5, 5), 13)
+
 
 state = "placing"
 
