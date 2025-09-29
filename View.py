@@ -39,9 +39,6 @@ class View:
                         grid.grid[y][x].draw(screen_position, self)
                     else:
                         assert False, "not done yet"
-                    y_, x_ = divmod(grid.grid[y][x].invertedIllegalDirectionEncoded, 4)
-                    tile_id = x_*2 + y_*8*2
-                    self.draw_tile(screen_position, "basic_obstacles", tile_id, Vec(2, 2))
                 else:
                     self.draw_tile(self.grid2screen(Vec(x, y)), "basic_obstacles", 0, Vec(2, 2))
         for y in range(len(grid.grid)):

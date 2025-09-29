@@ -1,3 +1,6 @@
+from Vec import *
+
+
 class OnMapObstacle:
     def __init__(self, pos, illegal_directions_encoded):
         """
@@ -25,8 +28,10 @@ class OnMapObstacle:
         n = self.vec2bit_position(v)
         return (self.illegalDirectionsEncoded >> n) % 2 == 1
     
-    def draw(self,pos, view):
-        pass #oui bon ptite flemme 
+    def draw(self, pos, view):
+        y_, x_ = divmod(self.invertedIllegalDirectionEncoded, 4)
+        tile_id = x_ * 2 + y_ * 8 * 2
+        view.draw_tile(pos, "basic_obstacles", tile_id, Vec(2, 2))
 
     @property
     def invertedIllegalDirectionEncoded(self):
