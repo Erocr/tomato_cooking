@@ -6,13 +6,17 @@ class Tomato:
         self.path = [pos]
         self.hit = 0 #pour savoir combien de fois les frustomates ont tapé qq
 
+    
+    def change_type(self, new_type):
+        self.type = new_type
+
     def move(self, grid):
         self.path = [self.path[-1]]
         if grid.is_legal(self.pos+self.dir, self.dir):
             grid.move_tomato(self, self.pos+self.dir)
             self.path.append(self.pos)
         else:
-            self.path.append(self.pos + self.dir/2)
+            self.path.append(self.pos + self.dir / 4)
             self.path.append(self.pos)
             self.dir = -self.dir
 

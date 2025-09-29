@@ -1,7 +1,11 @@
 from Inputs import Inputs
-from View import View
+from View import *
 from Vec import *
 from Grid import *
+from Level import *
+from Blocs import *
+
+from Button import *
 import time
 from random import random, choice
 
@@ -9,11 +13,35 @@ FPS = 50
 
 view = View()
 inputs = Inputs()
-grid = Grid(Vec(10, 10))
+#grid = Grid(Vec(10, 10))
+level = Level([2, 0, 0, 0])
+grid = level.grid
 
 for i in range(15):
-    grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), 0))
+    grid.add_tomato(Tomato(Vec(random()*10, random()*10), choice([Vec(1, 0), Vec(-1, 0), Vec(0, -1), Vec(0, 1)]), int(random()*4)))
 
+level.add_bloc(Goal(Vec(3, 4), [1, 0, 0, 0]))
+
+grid.add_tomato(Tomato(Vec(0, 0), Vec(0, 1), 0))
+grid.grid[0][0] = OnMapObstacle(Vec(0, 0), 2)
+grid.grid[5][0] = OnMapObstacle(Vec(0, 5), 8)
+grid.grid[5][5] = OnMapObstacle(Vec(5, 5), 12)
+
+
+state = "placing"
+
+
+def run_function(button):
+    global state
+    if button.image_id == 0:
+        state = "running"
+        button.image_id = 2
+    else:
+        state = "placing"
+        button.image_id = 0
+
+
+grid.add_button(Button(0, run_function, Vec(12, 0)))
 
 frame_count = 0
 while not inputs.quit:
@@ -21,12 +49,24 @@ while not inputs.quit:
     start = time.time()
     inputs.update()
 
-    if frame_count % 25 == 0:
-        grid.one_turn()
+    grid.update(inputs)
+    if inputs.get_pressed(pg.K_p):
+        state = ("placing", "running")[state == "placing"]
+        frame_count = 1
+
+    if state == "running":
+        if frame_count % 25 == 0:
+            grid.one_turn()
 
     view.fill()
-    view.draw_grid(grid, (frame_count % 25)/25)
+    if state == "running":
+        view.draw_grid(grid, (frame_count % 25)/25)
+    else:
+        view.draw_grid(grid, 0)
     view.update(inputs.get_resized())
+
+    # if level.victory():
+    #     print("chocoolaaat (c'est gagné)")
 
     t = time.time() - start
     if t < 1/FPS:
