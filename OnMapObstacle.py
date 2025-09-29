@@ -27,3 +27,15 @@ class OnMapObstacle:
     
     def draw(self,pos, view):
         pass #oui bon ptite flemme 
+
+    @property
+    def invertedIllegalDirectionEncoded(self):
+        res = 0
+        encode = self.illegalDirectionsEncoded
+        for i in range(4):
+            res = res << 1
+            res += encode % 2
+            encode = encode >> 1
+        res = res << 2
+        res = res % 16 + (res >> 4)
+        return res

@@ -22,6 +22,7 @@ class Inputs:
         self.__quit = False
         self.__mouse_pos = Vec(0, 0)
         self.__mouse_pressed = False
+        self.__mouse_holding = False
 
         self.window_size_factor = Vec(0, 0)
 
@@ -45,7 +46,9 @@ class Inputs:
                 self.__keysHolding.remove(event.key)
             elif event.type == pg.VIDEORESIZE:
                 self.__isResized = True
-        self.__mouse_pressed = pg.mouse.get_pressed()[0]
+        mouse_holding = pg.mouse.get_pressed()[0]
+        self.__mouse_pressed = not self.__mouse_holding and mouse_holding
+        self.__mouse_holding = mouse_holding
         self.__mouse_pos = Vec(*pg.mouse.get_pos())
 
 # getters --------------------------------------------------------------------------------------------------------------
@@ -60,7 +63,9 @@ class Inputs:
 
     @property
     def mouse_pos(self):
-        return self.__mouse_pos
+        info = pg.display.Info()
+        w, h = info.current_w, info.current_h
+        return self.__mouse_pos / Vec(w, h) * Vec(1920, 1080)
 
     @property
     def mouse_pressed(self):

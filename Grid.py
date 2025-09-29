@@ -15,9 +15,11 @@ class Grid:
         assert self.is_in_grid(bloc.pos), "Le bloc ajouté est en dehors de la grille"
         self.grid[bloc.pos.y][bloc.pos.x] = bloc
         self.blocs_list.append(bloc)
+        self.buttons = []
 
     def add_tomato(self, tomato):
         tomato.pos = tomato.pos.to_int()
+        tomato.path[0] = tomato.pos
         assert self.is_in_grid(tomato.pos), "La tomate ajoutée est au-dehors de la grille"
         self.tomatoes_list.append(tomato)
         self.tomatoes[tomato.pos.y][tomato.pos.x].append(tomato)
@@ -35,6 +37,13 @@ class Grid:
         for b in self.blocs_list:
             if tomato.pos == b.pos:
                 b.action(self,tomato)
+
+    def add_button(self, button):
+        self.buttons.append(button)
+
+    def update(self, inputs):
+        for button in self.buttons:
+            button.update(inputs)
 
     def one_turn(self):
         for tomato in self.tomatoes_list:

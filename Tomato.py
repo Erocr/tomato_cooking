@@ -14,7 +14,7 @@ class Tomato:
             grid.move_tomato(self, self.pos+self.dir)
             self.path.append(self.pos)
         else:
-            self.path.append(self.pos + self.dir/2)
+            self.path.append(self.pos + self.dir / 4)
             self.path.append(self.pos)
             self.dir = -self.dir
 
