@@ -8,6 +8,13 @@ class Grid:
         self.grid: list[list[Optional[OnMapObstacle]]] = [[None for _ in range(int(size.x))] for _ in range(int(size.y))]
         self.tomatoes: list[list[list[Tomato]]] = [[[] for _ in range(int(size.x))] for _ in range(int(size.y))]
         self.tomatoes_list = []
+        self.blocs_list = []        
+    
+    def add_bloc(self, bloc):
+        bloc.pos = bloc.pos.to_int()
+        assert self.is_in_grid(bloc.pos), "Le bloc ajouté est en dehors de la grille"
+        self.grid[bloc.pos.y][bloc.pos.x] = bloc
+        self.blocs_list.append(bloc)
         self.buttons = []
 
     def add_tomato(self, tomato):
@@ -25,6 +32,11 @@ class Grid:
         self.tomatoes[tomato.pos.y][tomato.pos.x].remove(tomato)
         self.tomatoes[new_pos.y][new_pos.x].append(tomato)
         tomato.pos = new_pos
+    
+    def coll_tomatoblocs(self, tomato):
+        for b in self.blocs_list:
+            if tomato.pos == b.pos:
+                b.action(self,tomato)
 
     def add_button(self, button):
         self.buttons.append(button)
@@ -40,13 +52,15 @@ class Grid:
             for i2 in range(i1+1, len(self.tomatoes_list)):
                 t1 = self.tomatoes_list[i1]
                 t2 = self.tomatoes_list[i2]
-                if t1.pos == t2.pos - t2.dir and t2.pos == t1.pos - t1.dir:
+                if t1.pos == t2.pos - t2.dir and t2.pos == t1.pos - t1.dir: #si 2 deux tomates se rentrent dedans
                     t1.path = [t1.path[0], t1.pos - 3*t1.dir/4, t1.pos - t1.dir]
                     t2.path = [t2.path[0], t2.pos - 3*t2.dir/4, t2.pos - t2.dir]
                     self.move_tomato(t1, t1.pos - t1.dir)
                     self.move_tomato(t2, t2.pos - t2.dir)
                     t1.dir = -t1.dir
                     t2.dir = -t2.dir
+            self.coll_tomatoblocs(self.tomatoes_list[i1])
+        
         for tomato in self.tomatoes_list:
             tomato.apply_collision_visuals(self)
         for line in self.tomatoes:

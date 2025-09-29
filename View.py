@@ -1,6 +1,7 @@
 from os import listdir
 from Tileset import *
 from Shader import *
+from OnMapObstacle import *
 
 
 class View:
@@ -33,6 +34,11 @@ class View:
             for x in range(len(grid.grid[y])):
                 if grid.grid[y][x] is not None:
                     screen_position = self.grid2screen(Vec(x, y))
+
+                    if isinstance(grid.grid[y][x], OnMapObstacle):
+                        grid.grid[y][x].draw(screen_position, self)
+                    else:
+                        assert False, "not done yet"
                     y_, x_ = divmod(grid.grid[y][x].invertedIllegalDirectionEncoded, 4)
                     tile_id = x_*2 + y_*8*2
                     self.draw_tile(screen_position, "basic_obstacles", tile_id, Vec(2, 2))
