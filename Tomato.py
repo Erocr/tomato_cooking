@@ -2,11 +2,10 @@ class Tomato:
     def __init__(self, pos, direction, type_):
         self.pos = pos
         self.dir = direction
-        self.type = type_ #0 : tomate normale, 1 tomatiguée, 2 frustomate, 3 tomatriste
+        self.type = type_  # 0 : tomate normale, 1 tomatiguée, 2 frustomate, 3 tomatriste
         self.path = [pos]
-        self.hit = 0 #pour savoir combien de fois les frustomates ont tapé qq
+        self.hit = 0  # pour savoir combien de fois les frustomates ont tapé qq
 
-    
     def change_type(self, new_type):
         self.type = new_type
 
@@ -23,6 +22,8 @@ class Tomato:
     def apply_collision_visuals(self, grid):
         if grid.nb_tomatoes_at(self.pos) > 1:
             self.path[-1] = self.pos - self.dir / 4
+            for other in grid.others_tomato_at(self.pos, self):
+                self.interact(other)
 
     def lerped_position(self, t):
         if len(self.path) == 1:
@@ -36,24 +37,27 @@ class Tomato:
         if self.type == 0:
             if tomato.type == 1:
                 self.type = 1
-            elif tomato.type == 2 :
+            elif tomato.type == 2:
                 self.type = 3
-                tomato.hit += 1
+                # tomato.hit += 1
             elif tomato.type == 3: pass
         elif self.type == 1:
             if tomato.type == 0:
-                tomato.type = 1
-            elif tomato.type == 2 :
+                # tomato.type = 1
+                pass
+            elif tomato.type == 2:
                 self.type = 0
             elif tomato.type == 3: pass
         elif self.type == 2:
             if tomato.type == 0:
-                tomato.type = 3
+                # tomato.type = 3
                 self.hit += 1
             elif tomato.type == 1:
-                tomato.type = 0
+                # tomato.type = 0
+                pass
             elif tomato.type == 2:
-                tomato.hit += 1
+                # tomato.hit += 1
+                pass
                 self.hit += 1
             elif tomato.type == 3:
                 self.hit += 1
@@ -61,14 +65,15 @@ class Tomato:
             if tomato.type == 0: pass
             elif tomato.type == 1: pass
             elif tomato.type == 2:
-                tomato.hit += 1
+                pass
+                # tomato.hit += 1
             elif tomato.type == 3: pass
         
         if self.hit >= 3:
             self.type = 1
             self.hit = 0
         if tomato.hit >= 3:
-            tomato.type = 1
+            # tomato.type = 1
             self.hit = 0
 
 

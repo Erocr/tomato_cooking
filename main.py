@@ -65,9 +65,6 @@ while not inputs.quit:
         view.draw_grid(grid, 0)
     view.update(inputs.get_resized())
 
-    # if level.victory():
-    #     print("chocoolaaat (c'est gagné)")
-
     t = time.time() - start
     if t < 1/FPS:
         time.sleep(1/FPS - t)

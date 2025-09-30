@@ -52,7 +52,9 @@ class Grid:
             for i2 in range(i1+1, len(self.tomatoes_list)):
                 t1 = self.tomatoes_list[i1]
                 t2 = self.tomatoes_list[i2]
-                if t1.pos == t2.pos - t2.dir and t2.pos == t1.pos - t1.dir: #si 2 deux tomates se rentrent dedans
+                if t1.pos == t2.pos - t2.dir and t2.pos == t1.pos - t1.dir:
+                    # si 2 deux tomates se rentrent dedans en ayant des directions opposées et sans se retrouver dans
+                    # la même case
                     t1.path = [t1.path[0], t1.pos - 3*t1.dir/4, t1.pos - t1.dir]
                     t2.path = [t2.path[0], t2.pos - 3*t2.dir/4, t2.pos - t2.dir]
                     self.move_tomato(t1, t1.pos - t1.dir)
@@ -89,4 +91,11 @@ class Grid:
         ts = self.tomatoes[int(pos.y)][int(pos.x)]
         if ts[0] == tomato: return ts[1]
         else: return ts[0]
+
+    def others_tomato_at(self, pos, tomato):
+        res = []
+        for t in self.tomatoes[int(pos.y)][int(pos.x)]:
+            if t is not tomato:
+                res.append(t)
+        return res
 
